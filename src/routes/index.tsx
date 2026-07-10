@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Upload, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
 
@@ -35,11 +35,6 @@ function Index() {
           <Link to="/signup">
             <Button size="lg" className="gradient-bg text-white shadow-lg hover:opacity-90">
               Get Started <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
-          </Link>
-          <Link to="/resume">
-            <Button size="lg" variant="outline" className="glass">
-              <Upload className="mr-1 h-4 w-4" /> Upload Resume
             </Button>
           </Link>
         </div>
