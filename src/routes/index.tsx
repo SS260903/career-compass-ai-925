@@ -37,11 +37,6 @@ function Index() {
               Get Started <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </Link>
-          <Link to="/resume">
-            <Button size="lg" variant="outline" className="glass">
-              <Upload className="mr-1 h-4 w-4" /> Upload Resume
-            </Button>
-          </Link>
         </div>
       </section>
 
