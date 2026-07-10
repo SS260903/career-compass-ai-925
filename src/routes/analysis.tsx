@@ -239,7 +239,7 @@ function Analysis() {
           </div>
         )}
 
-        {!a.atsScore && !a.summary && a.raw && (
+        {!a.atsScore && !a.summary && Boolean(a.raw) && (
           <div className="mt-6">
             <Section title="Raw AI Response">
               <pre className="max-h-96 overflow-auto whitespace-pre-wrap rounded-xl bg-muted p-4 text-xs">
