@@ -22,13 +22,27 @@ const suggestions = [
 ];
 
 function extractReply(data: unknown): string {
-  if (typeof data === "string") return data;
-  if (data && typeof data === "object") {
-    const d = data as Record<string, unknown>;
-    for (const key of ["reply", "answer", "response", "message", "output", "text"]) {
-      if (typeof d[key] === "string") return d[key] as string;
+  if (data == null) return "";
+  if (typeof data === "string") {
+    const trimmed = data.trim();
+    if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+      try { return extractReply(JSON.parse(trimmed)); } catch { /* fall through */ }
     }
-    return JSON.stringify(data, null, 2);
+    return data;
+  }
+  if (Array.isArray(data)) {
+    return data.map((item) => extractReply(item)).filter(Boolean).join("\n\n");
+  }
+  if (typeof data === "object") {
+    const d = data as Record<string, unknown>;
+    for (const key of ["output", "reply", "answer", "response", "message", "text", "content", "result"]) {
+      if (key in d) {
+        const v = d[key];
+        if (typeof v === "string") return v;
+        if (v && typeof v === "object") return extractReply(v);
+      }
+    }
+    return "";
   }
   return String(data);
 }
