@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Upload, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
 
