@@ -79,10 +79,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "AI Career Helper — Discover Your Dream Career with AI" },
       { name: "description", content: "AI-powered career guidance, resume analysis, ATS scoring, personalized learning roadmaps, and interview preparation." },
-      { property: "og:title", content: "AI Career Helper" },
-      { property: "og:description", content: "AI-powered career guidance, resume analysis, ATS score, roadmaps, and interview prep." },
+      { property: "og:title", content: "AI Career Helper — Discover Your Dream Career with AI" },
+      { property: "og:description", content: "AI-powered career guidance, resume analysis, ATS scoring, personalized learning roadmaps, and interview preparation." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "AI Career Helper — Discover Your Dream Career with AI" },
+      { name: "twitter:description", content: "AI-powered career guidance, resume analysis, ATS scoring, personalized learning roadmaps, and interview preparation." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e871dc11-258b-4e01-93d1-78f6c5c9c774/id-preview-04be98e7--7a982013-75ad-477d-b8bc-acee1e52e9d7.lovable.app-1783680689791.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e871dc11-258b-4e01-93d1-78f6c5c9c774/id-preview-04be98e7--7a982013-75ad-477d-b8bc-acee1e52e9d7.lovable.app-1783680689791.png" },
     ],
     links: [
       {
