@@ -30,6 +30,31 @@ function Roadmap() {
     setUserId(u.id);
   }, [navigate]);
 
+  const extractText = (data: unknown): string => {
+    if (data == null) return "";
+    if (typeof data === "string") {
+      const t = data.trim();
+      if (t.startsWith("{") || t.startsWith("[")) {
+        try { return extractText(JSON.parse(t)); } catch { /* ignore */ }
+      }
+      return data;
+    }
+    if (Array.isArray(data)) return data.map(extractText).filter(Boolean).join("\n\n");
+    if (typeof data === "object") {
+      const d = data as Record<string, unknown>;
+      for (const k of ["roadmap", "steps", "output", "reply", "answer", "response", "message", "text", "content", "result"]) {
+        if (k in d) {
+          const v = d[k];
+          if (Array.isArray(v)) return v.map(extractText).filter(Boolean).join("\n\n");
+          if (typeof v === "string") return v;
+          if (v && typeof v === "object") return extractText(v);
+        }
+      }
+      return "";
+    }
+    return String(data);
+  };
+
   const generate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -43,17 +68,9 @@ function Roadmap() {
       const raw = await res.text();
       let data: unknown = raw;
       try { data = JSON.parse(raw); } catch { /* string */ }
-      let list: string[] = [];
-      if (Array.isArray(data)) list = data.map(String);
-      else if (data && typeof data === "object") {
-        const d = data as Record<string, unknown>;
-        const r = d.roadmap ?? d.steps ?? d.output;
-        if (Array.isArray(r)) list = r.map(String);
-        else if (typeof r === "string") list = r.split(/\n+/).filter(Boolean);
-      } else if (typeof data === "string") {
-        list = data.split(/\n+/).filter(Boolean);
-      }
-      setSteps(list.length ? list : [String(data)]);
+      const text = extractText(data);
+      const list = text.split(/\n+/).map((s) => s.replace(/^\s*[-*•]\s*/, "").trim()).filter(Boolean);
+      setSteps(list.length ? list : (text ? [text] : ["No roadmap returned."]));
     } catch {
       toast.error("Failed to generate roadmap");
     } finally {
