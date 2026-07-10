@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Upload, Brain, FileSearch, Target, Route, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
+import { ArrowRight, Upload, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +12,7 @@ const features = [
   { icon: FileSearch, title: "Resume Analysis", desc: "Upload your resume and receive detailed AI feedback." },
   { icon: Target, title: "ATS Score", desc: "Calculate ATS compatibility and improve resume quality." },
   { icon: Sparkles, title: "Skill Gap Analysis", desc: "Identify missing skills for your target job." },
-  { icon: Route, title: "Learning Roadmap", desc: "Books, videos, certifications, and courses tailored for you." },
+  { icon: RouteIcon, title: "Learning Roadmap", desc: "Books, videos, certifications, and courses tailored for you." },
   { icon: MessagesSquare, title: "Interview Preparation", desc: "Generate interview questions and preparation tips." },
 ];
 
