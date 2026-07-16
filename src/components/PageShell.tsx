@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { AnimatedBackground } from "@/components/AnimatedBackground";
+import { InteractiveRobot } from "@/components/InteractiveRobot";
 
 export function PageShell({ children, showBg = true }: { children: ReactNode; showBg?: boolean }) {
   return (
@@ -10,6 +11,7 @@ export function PageShell({ children, showBg = true }: { children: ReactNode; sh
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <InteractiveRobot />
     </div>
   );
 }
