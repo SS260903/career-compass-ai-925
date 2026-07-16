@@ -15,6 +15,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [user, setUserState] = useState<User | null>(null);
   const [dark, setDark] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -22,6 +23,13 @@ export function Navbar() {
     const isDark = localStorage.getItem("theme") === "dark";
     setDark(isDark);
     document.documentElement.classList.toggle("dark", isDark);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const toggleDark = () => {
@@ -40,27 +48,33 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="mx-auto mt-3 max-w-7xl px-4">
-        <nav className="glass flex items-center justify-between rounded-2xl px-4 py-3 sm:px-6">
+        <nav
+          className={`glass flex items-center justify-between rounded-2xl px-4 py-3 transition-all duration-500 sm:px-6 ${
+            scrolled ? "nav-scrolled" : ""
+          }`}
+        >
           <Link to="/" className="flex items-center gap-2 font-display text-lg font-bold">
-            <span className="gradient-bg grid h-8 w-8 place-items-center rounded-xl text-white">
+            <span className="gradient-bg logo-float grid h-8 w-8 place-items-center rounded-xl text-white shadow-lg">
               <Sparkles className="h-4 w-4" />
             </span>
             <span className="gradient-text">AI Career Helper</span>
           </Link>
+
 
           <div className="hidden items-center gap-1 md:flex">
             {links.map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
-                className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-                activeProps={{ className: "text-foreground bg-secondary" }}
+                className="nav-link rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                activeProps={{ className: "text-foreground is-active" }}
                 activeOptions={{ exact: true }}
               >
                 {l.label}
               </Link>
             ))}
           </div>
+
 
           <div className="hidden items-center gap-2 md:flex">
             <button

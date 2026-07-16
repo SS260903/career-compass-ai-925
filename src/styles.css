@@ -157,3 +157,313 @@
 .typing-dot { animation: typing-dot 1.2s infinite; }
 .typing-dot:nth-child(2) { animation-delay: 0.2s; }
 .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* =========================================================
+   Premium animation system
+   ========================================================= */
+
+/* Animated mesh gradient — slow color transitions */
+.mesh-gradient {
+  background:
+    radial-gradient(at 20% 20%, color-mix(in oklab, var(--brand) 32%, transparent) 0px, transparent 50%),
+    radial-gradient(at 80% 10%, color-mix(in oklab, var(--brand-purple) 30%, transparent) 0px, transparent 50%),
+    radial-gradient(at 70% 80%, color-mix(in oklab, var(--primary) 25%, transparent) 0px, transparent 55%),
+    radial-gradient(at 15% 85%, color-mix(in oklab, var(--brand) 22%, transparent) 0px, transparent 50%);
+  filter: blur(40px);
+  animation: mesh-shift 24s ease-in-out infinite alternate;
+  will-change: transform, filter;
+}
+@keyframes mesh-shift {
+  0%   { transform: scale(1) translate(0, 0); filter: blur(40px) hue-rotate(0deg); }
+  50%  { transform: scale(1.15) translate(-2%, 1%); filter: blur(50px) hue-rotate(15deg); }
+  100% { transform: scale(1.05) translate(2%, -1%); filter: blur(45px) hue-rotate(-10deg); }
+}
+
+/* Horizontal flowing wave layers (parallax) */
+.wave-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    color-mix(in oklab, var(--brand) 12%, transparent) 30%,
+    color-mix(in oklab, var(--brand-purple) 14%, transparent) 55%,
+    transparent 90%
+  );
+  background-size: 200% 100%;
+  opacity: 0.35;
+  will-change: background-position, transform;
+  mix-blend-mode: screen;
+}
+.wave-layer-1 { animation: wave-flow 22s linear infinite; }
+.wave-layer-2 { animation: wave-flow 34s linear infinite reverse; opacity: 0.22; filter: blur(4px); }
+.wave-layer-3 { animation: wave-flow 48s linear infinite; opacity: 0.15; filter: blur(8px); }
+@keyframes wave-flow {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* Drifting particles */
+.particle {
+  position: absolute;
+  bottom: -20px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in oklab, var(--brand) 90%, white) 0%, transparent 70%);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--brand) 60%, transparent);
+  animation-name: particle-rise;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+@keyframes particle-rise {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  10%  { opacity: var(--o, 0.6); }
+  50%  { transform: translate3d(calc(var(--drift) * 0.5), -50vh, 0); opacity: var(--o, 0.6); }
+  90%  { opacity: var(--o, 0.6); }
+  100% { transform: translate3d(var(--drift), -110vh, 0); opacity: 0; }
+}
+
+/* Subtle noise */
+.noise-overlay {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-stagger.reveal-in > * { opacity: 1; transform: translateY(0); }
+.reveal-stagger.reveal-in > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.reveal-in > *:nth-child(2) { transition-delay: 0.15s; }
+.reveal-stagger.reveal-in > *:nth-child(3) { transition-delay: 0.25s; }
+.reveal-stagger.reveal-in > *:nth-child(4) { transition-delay: 0.35s; }
+.reveal-stagger.reveal-in > *:nth-child(5) { transition-delay: 0.45s; }
+.reveal-stagger.reveal-in > *:nth-child(6) { transition-delay: 0.55s; }
+.reveal-stagger.reveal-in > *:nth-child(n+7) { transition-delay: 0.65s; }
+
+/* Letter-by-letter hero reveal */
+.letter-reveal > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.5em);
+  animation: letter-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes letter-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Enhanced glass card with hover glow + shine */
+@utility glow-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease;
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    color-mix(in oklab, var(--brand) 60%, transparent),
+    color-mix(in oklab, var(--brand-purple) 60%, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.glow-card:hover::before { opacity: 1; }
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, color-mix(in oklab, white 45%, transparent) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+.glow-card:hover::after { transform: translateX(120%); }
+.glow-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 20px 60px -20px color-mix(in oklab, var(--brand) 45%, transparent),
+    0 0 40px -10px color-mix(in oklab, var(--brand-purple) 30%, transparent);
+}
+
+/* Tilt card */
+.tilt-card {
+  position: relative;
+  border-radius: inherit;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+.tilt-card-inner {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in oklab, var(--brand-purple) 25%, transparent), transparent 55%);
+}
+.tilt-card:hover .tilt-card-glow { opacity: 1; }
+.tilt-card-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tilt-card-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 40%, color-mix(in oklab, white 35%, transparent) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 1s ease;
+}
+.tilt-card:hover .tilt-card-shine::before { transform: translateX(120%); }
+
+/* Glowing / ripple button behavior — apply .btn-fx to any element */
+.btn-fx {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.3s ease, filter 0.3s ease;
+}
+.btn-fx:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow:
+    0 10px 30px -10px color-mix(in oklab, var(--brand) 60%, transparent),
+    0 0 20px -4px color-mix(in oklab, var(--brand-purple) 50%, transparent);
+}
+.btn-fx:active { transform: translateY(0) scale(0.98); }
+.btn-fx .ripple {
+  position: absolute;
+  border-radius: 9999px;
+  background: color-mix(in oklab, white 55%, transparent);
+  pointer-events: none;
+  transform: scale(0);
+  animation: ripple 0.6s ease-out;
+}
+@keyframes ripple {
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* Wave divider path motion */
+.wave-path {
+  animation: wave-sway 12s ease-in-out infinite;
+  transform-origin: center;
+}
+.wave-path-2 { animation-duration: 18s; animation-direction: reverse; }
+@keyframes wave-sway {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(-40px); }
+}
+
+/* Navbar scroll-blur helper */
+.nav-scrolled {
+  backdrop-filter: blur(28px) saturate(160%);
+  background: color-mix(in oklab, var(--card) 55%, transparent);
+  box-shadow: 0 8px 32px -12px color-mix(in oklab, var(--brand) 25%, transparent);
+}
+
+/* Logo float */
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-3px) rotate(-3deg); }
+}
+.logo-float { animation: logo-float 4s ease-in-out infinite; }
+
+/* Page loader ring */
+.loader-ring {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.loader-ring > div {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  border-top-color: var(--brand);
+  animation: loader-spin 1.2s linear infinite;
+}
+.loader-ring > div:nth-child(2) {
+  inset: 8px;
+  border-top-color: var(--brand-purple);
+  animation-duration: 1.6s;
+  animation-direction: reverse;
+}
+.loader-ring > div:nth-child(3) {
+  inset: 16px;
+  border-top-color: color-mix(in oklab, var(--brand) 60%, white);
+  animation-duration: 2s;
+}
+@keyframes loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Nav link underline indicator */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--brand), var(--brand-purple));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.nav-link:hover::after,
+.nav-link.is-active::after { transform: scaleX(1); }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-blob,
+  .mesh-gradient,
+  .wave-layer,
+  .wave-path,
+  .particle,
+  .logo-float,
+  .loader-ring > div {
+    animation: none !important;
+  }
+  .reveal, .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
