@@ -2,14 +2,13 @@ import { useEffect, useRef, type ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
-  as?: keyof HTMLElementTagNameMap;
   delay?: number;
   className?: string;
   stagger?: boolean;
 };
 
-export function ScrollReveal({ children, as = "div", delay = 0, className = "", stagger = false }: Props) {
-  const ref = useRef<HTMLElement | null>(null);
+export function ScrollReveal({ children, delay = 0, className = "", stagger = false }: Props) {
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -33,14 +32,13 @@ export function ScrollReveal({ children, as = "div", delay = 0, className = "", 
     return () => io.disconnect();
   }, []);
 
-  const Tag = as as keyof JSX.IntrinsicElements;
   return (
-    <Tag
-      ref={ref as never}
+    <div
+      ref={ref}
       className={`reveal ${stagger ? "reveal-stagger" : ""} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
