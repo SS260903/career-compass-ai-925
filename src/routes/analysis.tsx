@@ -23,85 +23,28 @@ type Analysis = {
   raw?: unknown;
 };
 
-function toArray(v: unknown): string[] | undefined {
-  if (v === undefined || v === null) return undefined;
-  if (Array.isArray(v)) {
-    const arr = v.map((x) => (typeof x === "string" ? x : typeof x === "object" ? JSON.stringify(x) : String(x))).map((s) => s.trim()).filter(Boolean);
-    return arr.length ? arr : undefined;
-  }
-  if (typeof v === "string") {
-    const parts = v.split(/\r?\n|,|;|\|/).map((s) => s.replace(/^[-*•\d.)\s]+/, "").trim()).filter(Boolean);
-    return parts.length ? parts : undefined;
-  }
-  if (typeof v === "object") {
-    const arr = Object.values(v as Record<string, unknown>).map((x) => String(x).trim()).filter(Boolean);
-    return arr.length ? arr : undefined;
-  }
-  return undefined;
-}
-
-function unwrap(data: unknown): unknown {
-  if (Array.isArray(data)) return unwrap(data[0]);
-  if (data && typeof data === "object") {
-    const d = data as Record<string, unknown>;
-    if (d.output !== undefined) return unwrap(d.output);
-    if (d.data !== undefined && typeof d.data === "object") return unwrap(d.data);
-    if (d.result !== undefined && typeof d.result === "object") return unwrap(d.result);
-    if (typeof d.json === "object" && d.json !== null) return unwrap(d.json);
-  }
-  if (typeof data === "string") {
-    const s = data.trim();
-    if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith("[") && s.endsWith("]"))) {
-      try { return unwrap(JSON.parse(s)); } catch { /* ignore */ }
-    }
-  }
-  return data;
-}
-
-function normalize(input: unknown): Analysis {
-  if (!input) return {};
-  const data = unwrap(input);
-  if (typeof data === "string") return { summary: data, raw: input };
-  if (!data || typeof data !== "object") return { raw: input };
+function normalize(data: unknown): Analysis {
+  if (!data) return {};
+  if (typeof data === "string") return { summary: data, raw: data };
   const d = data as Record<string, unknown>;
-  const get = (...keys: string[]): unknown => {
-    for (const k of keys) {
-      const found = Object.keys(d).find((dk) => dk.toLowerCase() === k.toLowerCase());
-      if (found && d[found] !== undefined && d[found] !== null && d[found] !== "") return d[found];
-    }
+  const get = <T,>(...keys: string[]): T | undefined => {
+    for (const k of keys) if (d[k] !== undefined) return d[k] as T;
     return undefined;
   };
-  const scoreRaw = get("atsScore", "ats_score", "ATS_Score", "score");
-  const scoreNum = typeof scoreRaw === "number" ? scoreRaw : typeof scoreRaw === "string" ? Number(scoreRaw.replace(/[^\d.]/g, "")) : NaN;
-  const summaryRaw = get("summary", "resumeSummary", "resume_summary");
-  const resources = get("resources");
-  const interview = get("interview", "interviewPrep", "interview_prep");
   return {
-    atsScore: Number.isFinite(scoreNum) ? scoreNum : undefined,
-    summary: typeof summaryRaw === "string" ? summaryRaw : summaryRaw ? String(summaryRaw) : undefined,
-    strengths: toArray(get("strengths")),
-    weaknesses: toArray(get("weaknesses")),
-    missingSkills: toArray(get("missingSkills", "missing_skills", "skillsMissing")),
-    recommendedRoles: toArray(get("recommendedRoles", "roles", "careerRoles", "recommended_roles")),
-    certifications: toArray(get("certifications", "recommendedCertifications")),
-    roadmap: toArray(get("roadmap", "learningRoadmap", "learning_roadmap")),
-    resources: resources && typeof resources === "object" ? {
-      books: toArray((resources as Record<string, unknown>).books),
-      youtube: toArray((resources as Record<string, unknown>).youtube),
-      courses: toArray((resources as Record<string, unknown>).courses),
-      documentation: toArray((resources as Record<string, unknown>).documentation),
-      practice: toArray((resources as Record<string, unknown>).practice),
-    } : undefined,
-    interview: interview && typeof interview === "object" ? {
-      technical: toArray((interview as Record<string, unknown>).technical),
-      hr: toArray((interview as Record<string, unknown>).hr),
-      coding: toArray((interview as Record<string, unknown>).coding),
-      behavioral: toArray((interview as Record<string, unknown>).behavioral),
-    } : undefined,
-    raw: input,
+    atsScore: Number(get("atsScore", "ats_score", "ATS_Score", "score")) || undefined,
+    summary: get("summary", "resumeSummary"),
+    strengths: get("strengths"),
+    weaknesses: get("weaknesses"),
+    missingSkills: get("missingSkills", "missing_skills"),
+    recommendedRoles: get("recommendedRoles", "roles", "careerRoles"),
+    certifications: get("certifications"),
+    roadmap: get("roadmap", "learningRoadmap"),
+    resources: get("resources"),
+    interview: get("interview", "interviewPrep"),
+    raw: data,
   };
 }
-
 
 function CircularScore({ value }: { value: number }) {
   const v = Math.max(0, Math.min(100, value));
@@ -296,7 +239,7 @@ function Analysis() {
           </div>
         )}
 
-        {a.atsScore === undefined && !a.summary && !a.strengths && !a.weaknesses && !a.missingSkills && !a.recommendedRoles && !a.certifications && Boolean(a.raw) && (
+        {!a.atsScore && !a.summary && Boolean(a.raw) && (
           <div className="mt-6">
             <Section title="Raw AI Response">
               <pre className="max-h-96 overflow-auto whitespace-pre-wrap rounded-xl bg-muted p-4 text-xs">
