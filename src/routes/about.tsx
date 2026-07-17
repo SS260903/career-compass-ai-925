@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
-import { Code2, Server, Palette, Cpu, Layout, Workflow } from "lucide-react";
+import { Code2, Server, Palette, Cpu, Layout, Workflow, PenTool } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -29,7 +29,7 @@ const team = [
     name: "Jayesh Singh",
     role: "UI/UX Designer • Visual Designer",
     desc: "Designed intuitive interfaces and project presentation assets.",
-    icons: [Palette],
+    icons: [Palette, PenTool],
   },
   {
     name: "Samaksh Soni",
