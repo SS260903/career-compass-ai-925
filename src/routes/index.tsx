@@ -19,6 +19,20 @@ const features = [
 ];
 
 function Index() {
+  const navigate = useNavigate();
+  const [authed, setAuthed] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    const u = getUser();
+    if (u) {
+      navigate({ to: "/dashboard", replace: true });
+      return;
+    }
+    setAuthed(false);
+    setChecked(true);
+  }, [navigate]);
+
   return (
     <PageShell>
       <section className="relative mx-auto max-w-7xl px-6 pt-20 pb-24 text-center">
@@ -34,13 +48,16 @@ function Index() {
           interview preparation, and skill recommendations using Artificial Intelligence.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/signup">
-            <Button size="lg" className="gradient-bg text-white shadow-lg hover:opacity-90">
-              Get Started <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
-          </Link>
+          {checked && !authed && (
+            <Link to="/signup">
+              <Button size="lg" className="gradient-bg text-white shadow-lg hover:opacity-90">
+                Get Started <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+          )}
         </div>
       </section>
+
 
       <section id="features" className="mx-auto max-w-7xl px-6 py-16">
         <div className="mb-12 text-center">
