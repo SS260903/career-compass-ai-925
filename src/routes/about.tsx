@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
-import { Code2, Server, Palette, Cpu, Layout, Workflow } from "lucide-react";
+import { Code2, Server, Palette, Cpu, Layout, Workflow, PenTool } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
