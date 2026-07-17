@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Github, Linkedin, LifeBuoy, Sparkles } from "lucide-react";
+import { Github, Linkedin, Sparkles } from "lucide-react";
 
 export function Footer() {
   return (
@@ -37,7 +37,7 @@ export function Footer() {
                 <Github className="h-5 w-5" />
               </a>
               <a
-                href="https://www.linkedin.com/in/ashwani-ojha-7055a03a1/"
+                href="https://www.linkedin.com/in/suryansh-srivastava-9245b528a"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -45,7 +45,6 @@ export function Footer() {
               >
                 <Linkedin className="h-5 w-5" />
               </a>
-              <a href="#" aria-label="Support" className="hover:text-foreground"><LifeBuoy className="h-5 w-5" /></a>
             </div>
           </div>
         </div>
