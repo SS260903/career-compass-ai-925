@@ -1,7 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ArrowRight, Brain, FileSearch, Target, Route as RouteIcon, GraduationCap, MessagesSquare, Sparkles } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
 import { Button } from "@/components/ui/button";
+import { getUser } from "@/lib/auth";
 
 export const Route = createFileRoute("/")({
   component: Index,
