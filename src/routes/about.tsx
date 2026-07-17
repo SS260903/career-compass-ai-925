@@ -29,7 +29,7 @@ const team = [
     name: "Jayesh Singh",
     role: "UI/UX Designer • Visual Designer",
     desc: "Designed intuitive interfaces and project presentation assets.",
-    icons: [Palette],
+    icons: [Palette, PenTool],
   },
   {
     name: "Samaksh Soni",
