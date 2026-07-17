@@ -38,8 +38,12 @@ function Features() {
       <section className="mx-auto max-w-7xl px-6 pb-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((f) => (
-            <div key={f.title} className="glass rounded-3xl p-6 transition hover:-translate-y-1">
-              <div className="gradient-bg mb-4 grid h-12 w-12 place-items-center rounded-2xl text-white">
+            <div
+              key={f.title}
+              className="glass group relative overflow-hidden rounded-3xl p-6 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-brand/30"
+            >
+              <div className="absolute inset-x-0 top-0 h-1 gradient-bg opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <div className="gradient-bg mb-4 grid h-12 w-12 place-items-center rounded-2xl text-white transition-transform duration-300 group-hover:scale-110">
                 <f.icon className="h-6 w-6" />
               </div>
               <h3 className="text-lg font-semibold">{f.title}</h3>
